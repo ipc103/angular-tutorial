@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Flatiron Grouper</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body ng-app="flatironGrouper" ng-controller="MainCtrl">
+    <div>
+      {{test}}
+    </div>
+
+    <div ng-repeat="group in groups | orderBy: 'rank'">
+      The {{group.name}} are a {{group.status}}
+    </div>
+
+  </body>
+</html>
