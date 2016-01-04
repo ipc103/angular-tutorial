@@ -1,10 +1,38 @@
-angular.module('flatironGrouper', [])
+angular.module('flatironGrouper', ['ui.router'])
+.config([
+  '$stateProvider',
+  '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider){
+    $stateProvider.state('home',{
+      url: '/home',
+      templateUrl: '/home.html',
+      controller: 'MainCtrl'
+    });
+
+    $stateProvider.state('groups', {
+      url: '/groups/{id}',
+      templateUrl: '/groups.html',
+      controller: 'GroupsCtrl'
+    });
+
+    $urlRouterProvider.otherwise('home');
+  }])
 .factory('groups', [function(){
   var o = {
     groups: [
-      {name: "Pittsburgh Steelers", rank: 6},
-      {name: "Pittsburgh Pirates", rank: 4},
-      {name: "Pittsburgh Penguins", rank: 17, status: "Not Very Good"}
+      {name: "Pittsburgh Steelers",
+      rank: 6,
+      players: [
+        {name: "Antonio Brown"}
+      ]},
+      {name: "Pittsburgh Pirates", rank: 4,
+      students: [
+        {name: "Andrew McCutchen"}
+      ]},
+      {name: "Pittsburgh Penguins", rank: 17, status: "Not Very Good",
+      players: [
+        {name: "Sidney Crosby"}
+      ]}
     ]
   };
   return o;
@@ -30,4 +58,15 @@ function($scope, groups){
     $scope.decrementRank = function(group){
       group.rank += 1;
     };
-  }]);
+  }])
+  .controller('GroupsCtrl', [
+    '$scope',
+    '$stateParams',
+    'groups',
+    function($scope, $stateParams, groups){
+      $scope.group = groups.groups[$stateParams.id];
+      $scope.addStudent = function(){
+        $scope.group.students.push({name: $scope.name});
+        $scope.name = '';
+      };
+    }]);
